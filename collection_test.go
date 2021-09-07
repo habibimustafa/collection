@@ -32,6 +32,12 @@ func TestCollectingArray(t *testing.T) {
 	assert.Equal(t, "John Doe", mapCollection.Implode(" "))
 }
 
+func TestGetAllItems(t *testing.T) {
+	collection := Collection{"Hello", "World"}
+	assert.Equal(t, []interface{}{"Hello", "World"}, collection.All())
+	assert.Equal(t, "Hello", collection.All()[0])
+}
+
 func TestCollectionIsNotEmpty(t *testing.T) {
 	collection := Collection{"Hello", "World"}
 	assert.True(t, collection.IsNotEmpty())
