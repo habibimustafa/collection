@@ -36,6 +36,8 @@ func TestGetAllItems(t *testing.T) {
 	collection := Collection{"Hello", "World"}
 	assert.Equal(t, []interface{}{"Hello", "World"}, collection.All())
 	assert.Equal(t, "Hello", collection.All()[0])
+	assert.Equal(t, []interface{}{"Hello"}, collection.All()[:1])
+	assert.Equal(t, []interface{}{"World"}, collection.All()[1:])
 }
 
 func TestGetItem(t *testing.T) {
