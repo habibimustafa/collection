@@ -113,6 +113,19 @@ func TestCollectionChunk(t *testing.T) {
 	collection := Collection{"2607", "f0d0", "1002", "0051", "0000", "0000", "0000", "0004"}
 
 	expected := Collection{
+		Collection{"2607", "f0d0", "1002", "0051", "0000", "0000", "0000", "0004"},
+	}
+
+	assert.Equal(t, expected, collection.Chunk(8))
+
+	expected = Collection{
+		Collection{"2607", "f0d0", "1002", "0051", "0000", "0000"},
+		Collection{"0000", "0004"},
+	}
+
+	assert.Equal(t, expected, collection.Chunk(6))
+
+	expected = Collection{
 		Collection{"2607", "f0d0", "1002", "0051"},
 		Collection{"0000", "0000", "0000", "0004"},
 	}
@@ -127,4 +140,7 @@ func TestCollectionChunk(t *testing.T) {
 	}
 
 	assert.Equal(t, expected, collection.Chunk(2))
+
+	assert.Equal(t, collection, collection.Chunk(0))
+	assert.Equal(t, collection, collection.Chunk(-1))
 }
