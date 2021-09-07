@@ -108,3 +108,23 @@ func TestCollectionWhenNotEmptyOnNotEmpty(t *testing.T) {
 
 	assert.Equal(t, Collection{"Hi", "Hello", "World"}, collection)
 }
+
+func TestCollectionChunk(t *testing.T) {
+	collection := Collection{"2607", "f0d0", "1002", "0051", "0000", "0000", "0000", "0004"}
+
+	expected := Collection{
+		Collection{"2607", "f0d0", "1002", "0051"},
+		Collection{"0000", "0000", "0000", "0004"},
+	}
+
+	assert.Equal(t, expected, collection.Chunk(4))
+
+	expected = Collection{
+		Collection{"2607", "f0d0"},
+		Collection{"1002", "0051"},
+		Collection{"0000", "0000"},
+		Collection{"0000", "0004"},
+	}
+
+	assert.Equal(t, expected, collection.Chunk(2))
+}
