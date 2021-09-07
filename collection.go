@@ -44,6 +44,14 @@ func (c Collection) Size() int {
 	return len(c)
 }
 
+func (c Collection) First() interface{} {
+	return c[0]
+}
+
+func (c Collection) Last() interface{} {
+	return c[c.Size()-1]
+}
+
 func (c Collection) IsNotEmpty() bool {
 	return c.Size() > 0
 }
