@@ -38,6 +38,12 @@ func TestGetAllItems(t *testing.T) {
 	assert.Equal(t, "Hello", collection.All()[0])
 }
 
+func TestGetItem(t *testing.T) {
+	collection := Collection{"Hello", "World"}
+	assert.Equal(t, "Hello", collection.Get(0))
+	assert.Equal(t, "World", collection.Get(1))
+}
+
 func TestCollectionIsNotEmpty(t *testing.T) {
 	collection := Collection{"Hello", "World"}
 	assert.True(t, collection.IsNotEmpty())
