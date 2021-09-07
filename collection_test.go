@@ -46,6 +46,12 @@ func TestGetItem(t *testing.T) {
 	assert.Equal(t, "World", collection.Get(1))
 }
 
+func TestGetFirstAndLastItem(t *testing.T) {
+	collection := Collection{"Hello", "Middle", "World"}
+	assert.Equal(t, "Hello", collection.First())
+	assert.Equal(t, "World", collection.Last())
+}
+
 func TestCollectionIsNotEmpty(t *testing.T) {
 	collection := Collection{"Hello", "World"}
 	assert.True(t, collection.IsNotEmpty())
