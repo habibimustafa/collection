@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"math"
 	"reflect"
 )
 
@@ -105,4 +106,25 @@ func (items Collection) WhenNotEmpty(callback func(collection Collection) interf
 	}
 
 	return items
+}
+
+func (items Collection) Chunk(size int) interface{} {
+	if size <= 0 {
+		return items
+	}
+
+	length := len(items)
+	chunks := int(math.Ceil(float64(length) / float64(size)))
+
+	var newItems Collection
+	for i, end := 0, 0; chunks > 0; chunks-- {
+		end = (i + 1) * size
+		if end > length {
+			end = length
+		}
+		newItems = append(newItems, items[i*size:end])
+		i++
+	}
+
+	return newItems
 }
