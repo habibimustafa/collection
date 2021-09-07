@@ -32,26 +32,26 @@ func Collect(list interface{}) Collection {
 	return nil
 }
 
-func (items Collection) Size() int {
-	return len(items)
+func (c Collection) Size() int {
+	return len(c)
 }
 
-func (items Collection) IsNotEmpty() bool {
-	return items.Size() > 0
+func (c Collection) IsNotEmpty() bool {
+	return c.Size() > 0
 }
 
-func (items Collection) Append(item interface{}) Collection {
-	return append(items, item)
+func (c Collection) Append(item interface{}) Collection {
+	return append(c, item)
 }
 
-func (items Collection) Prepend(item interface{}) Collection {
+func (c Collection) Prepend(item interface{}) Collection {
 	newItems := Collection{item}
-	return append(newItems, items...)
+	return append(newItems, c...)
 }
 
-func (items Collection) Implode(glue string) string {
+func (c Collection) Implode(glue string) string {
 	var buf bytes.Buffer
-	for i, str := range items {
+	for i, str := range c {
 		if i > 0 {
 			buf.WriteString(glue)
 		}
@@ -61,8 +61,8 @@ func (items Collection) Implode(glue string) string {
 	return buf.String()
 }
 
-func (items Collection) Has(value interface{}) bool {
-	for _, item := range items {
+func (c Collection) Has(value interface{}) bool {
+	for _, item := range c {
 		if value == item {
 			return true
 		}
@@ -71,25 +71,25 @@ func (items Collection) Has(value interface{}) bool {
 	return false
 }
 
-func (items Collection) Each(callback func(item interface{}, index int)) Collection {
-	itemsCopy := items
+func (c Collection) Each(callback func(item interface{}, index int)) Collection {
+	itemsCopy := c
 	for i, item := range itemsCopy {
 		callback(item, i)
 	}
-	return items
+	return c
 }
 
-func (items Collection) Map(callback func(item interface{}) interface{}) Collection {
+func (c Collection) Map(callback func(item interface{}) interface{}) Collection {
 	var newItems Collection
-	for _, item := range items {
+	for _, item := range c {
 		newItems = append(newItems, callback(item))
 	}
 	return newItems
 }
 
-func (items Collection) Filter(callback func(item interface{}) bool) Collection {
+func (c Collection) Filter(callback func(item interface{}) bool) Collection {
 	var newItems Collection
-	for _, item := range items {
+	for _, item := range c {
 		if callback(item) {
 			newItems = append(newItems, item)
 		}
@@ -97,23 +97,23 @@ func (items Collection) Filter(callback func(item interface{}) bool) Collection 
 	return newItems
 }
 
-func (items Collection) WhenNotEmpty(callback func(collection Collection) interface{}) Collection {
-	if items.IsNotEmpty() {
-		result := callback(items)
+func (c Collection) WhenNotEmpty(callback func(collection Collection) interface{}) Collection {
+	if c.IsNotEmpty() {
+		result := callback(c)
 		if newCollection, ok := result.(Collection); ok {
 			return newCollection
 		}
 	}
 
-	return items
+	return c
 }
 
-func (items Collection) Chunk(size int) interface{} {
+func (c Collection) Chunk(size int) interface{} {
 	if size <= 0 {
-		return items
+		return c
 	}
 
-	length := len(items)
+	length := len(c)
 	chunks := int(math.Ceil(float64(length) / float64(size)))
 
 	var newItems Collection
@@ -122,7 +122,7 @@ func (items Collection) Chunk(size int) interface{} {
 		if end > length {
 			end = length
 		}
-		newItems = append(newItems, items[i*size:end])
+		newItems = append(newItems, c[i*size:end])
 		i++
 	}
 
