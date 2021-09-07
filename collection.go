@@ -36,6 +36,10 @@ func (c Collection) All() []interface{} {
 	return c
 }
 
+func (c Collection) Get(index int) interface{} {
+	return c[index]
+}
+
 func (c Collection) Size() int {
 	return len(c)
 }
