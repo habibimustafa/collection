@@ -32,6 +32,10 @@ func Collect(list interface{}) Collection {
 	return nil
 }
 
+func (c Collection) All() []interface{} {
+	return c
+}
+
 func (c Collection) Size() int {
 	return len(c)
 }
