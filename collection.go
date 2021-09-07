@@ -45,8 +45,7 @@ func (c Collection) Append(item interface{}) Collection {
 }
 
 func (c Collection) Prepend(item interface{}) Collection {
-	newItems := Collection{item}
-	return append(newItems, c...)
+	return append(Collection{item}, c...)
 }
 
 func (c Collection) Implode(glue string) string {
@@ -80,21 +79,21 @@ func (c Collection) Each(callback func(item interface{}, index int)) Collection 
 }
 
 func (c Collection) Map(callback func(item interface{}) interface{}) Collection {
-	var newItems Collection
+	var newCollection Collection
 	for _, item := range c {
-		newItems = append(newItems, callback(item))
+		newCollection = append(newCollection, callback(item))
 	}
-	return newItems
+	return newCollection
 }
 
 func (c Collection) Filter(callback func(item interface{}) bool) Collection {
-	var newItems Collection
+	var newCollection Collection
 	for _, item := range c {
 		if callback(item) {
-			newItems = append(newItems, item)
+			newCollection = append(newCollection, item)
 		}
 	}
-	return newItems
+	return newCollection
 }
 
 func (c Collection) WhenNotEmpty(callback func(collection Collection) interface{}) Collection {
@@ -116,15 +115,15 @@ func (c Collection) Chunk(size int) interface{} {
 	length := len(c)
 	chunks := int(math.Ceil(float64(length) / float64(size)))
 
-	var newItems Collection
+	var newCollection Collection
 	for i, end := 0, 0; chunks > 0; chunks-- {
 		end = (i + 1) * size
 		if end > length {
 			end = length
 		}
-		newItems = append(newItems, c[i*size:end])
+		newCollection = append(newCollection, c[i*size:end])
 		i++
 	}
 
-	return newItems
+	return newCollection
 }
