@@ -78,6 +78,11 @@ func TestCollectionImplode(t *testing.T) {
 	assert.Equal(t, "Hello World", collection.Implode(" "))
 }
 
+func TestCollectionKeys(t *testing.T) {
+	collection := Collect(map[string]string{"first": "John", "last": "Doe"})
+	assert.Equal(t, []interface{}{0, 1}, collection.Keys())
+}
+
 func TestCollectionHas(t *testing.T) {
 	collection := Collection{"Hello", "World"}
 	assert.True(t, collection.Has("Hello"))
