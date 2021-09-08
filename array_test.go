@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestCollectingArray(t *testing.T) {
+func TestCreateArray(t *testing.T) {
 	arrString := []string{"Hello", "World"}
 	strCollection := List(arrString)
 	assert.Equal(t, len(arrString), len(strCollection))
@@ -32,7 +32,7 @@ func TestCollectingArray(t *testing.T) {
 	assert.Equal(t, "John Doe", mapCollection.Implode(" "))
 }
 
-func TestGetAllItems(t *testing.T) {
+func TestArrayGetAllItems(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	assert.Equal(t, []interface{}{"Hello", "World"}, collection.All())
 	assert.Equal(t, "Hello", collection.All()[0])
@@ -40,24 +40,24 @@ func TestGetAllItems(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, collection.All()[1:])
 }
 
-func TestGetItem(t *testing.T) {
+func TestArrayGetItem(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	assert.Equal(t, "Hello", collection.Get(0))
 	assert.Equal(t, "World", collection.Get(1))
 }
 
-func TestGetFirstAndLastItem(t *testing.T) {
+func TestArrayGetFirstAndLastItem(t *testing.T) {
 	collection := Array{"Hello", "Middle", "World"}
 	assert.Equal(t, "Hello", collection.First())
 	assert.Equal(t, "World", collection.Last())
 }
 
-func TestCollectionIsNotEmpty(t *testing.T) {
+func TestArrayIsNotEmpty(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	assert.True(t, collection.IsNotEmpty())
 }
 
-func TestCollectionAppend(t *testing.T) {
+func TestArrayAppend(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	collection = collection.Append("Hi")
 
@@ -65,7 +65,7 @@ func TestCollectionAppend(t *testing.T) {
 	assert.Equal(t, "Hi", collection[2])
 }
 
-func TestCollectionPrepend(t *testing.T) {
+func TestArrayPrepend(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	collection = collection.Prepend("Hi")
 
@@ -73,17 +73,17 @@ func TestCollectionPrepend(t *testing.T) {
 	assert.Equal(t, "Hi", collection[0])
 }
 
-func TestCollectionImplode(t *testing.T) {
+func TestArrayImplode(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	assert.Equal(t, "Hello World", collection.Implode(" "))
 }
 
-func TestCollectionKeys(t *testing.T) {
+func TestArrayKeys(t *testing.T) {
 	collection := List(map[string]string{"first": "John", "last": "Doe"})
 	assert.Equal(t, []interface{}{0, 1}, collection.Keys())
 }
 
-func TestCollectionIndex(t *testing.T) {
+func TestArrayIndex(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	assert.Equal(t, 0, collection.Index("Hello"))
 	assert.Equal(t, 1, collection.Index("World"))
@@ -95,13 +95,13 @@ func TestCollectionIndex(t *testing.T) {
 	assert.Equal(t, nil, collection.Index("Random"))
 }
 
-func TestCollectionHas(t *testing.T) {
+func TestArrayHas(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	assert.True(t, collection.Has("Hello"))
 	assert.False(t, collection.Has("Random"))
 }
 
-func TestCollectionEach(t *testing.T) {
+func TestArrayEach(t *testing.T) {
 	collectionBefore := Array{"Hello", "World"}
 	collectionAfter := collectionBefore.Each(func(value interface{}, index int) {
 		value = fmt.Sprintf("[%v] %v", index, value)
@@ -110,7 +110,7 @@ func TestCollectionEach(t *testing.T) {
 	assert.Equal(t, collectionAfter, collectionBefore)
 }
 
-func TestCollectionMap(t *testing.T) {
+func TestArrayMap(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	collection = collection.Map(func(item interface{}) interface{} {
 		return fmt.Sprintf("- %v\n", item)
@@ -119,7 +119,7 @@ func TestCollectionMap(t *testing.T) {
 	assert.Equal(t, Array{"- Hello\n", "- World\n"}, collection)
 }
 
-func TestCollectionFilter(t *testing.T) {
+func TestArrayFilter(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	collection = collection.Filter(func(item interface{}) bool {
 		return item != "Hello"
@@ -128,7 +128,7 @@ func TestCollectionFilter(t *testing.T) {
 	assert.Equal(t, Array{"World"}, collection)
 }
 
-func TestCollectionWhenNotEmptyOnEmpty(t *testing.T) {
+func TestArrayWhenNotEmptyOnEmpty(t *testing.T) {
 	collection := Array{}
 	collection = collection.WhenNotEmpty(func(collection Array) interface{} {
 		return collection.Prepend("Hi")
@@ -137,7 +137,7 @@ func TestCollectionWhenNotEmptyOnEmpty(t *testing.T) {
 	assert.Equal(t, Array{}, collection)
 }
 
-func TestCollectionWhenNotEmptyOnNotEmpty(t *testing.T) {
+func TestArrayWhenNotEmptyOnNotEmpty(t *testing.T) {
 	collection := Array{"Hello", "World"}
 	collection = collection.WhenNotEmpty(func(collection Array) interface{} {
 		return collection.Prepend("Hi")
@@ -146,7 +146,7 @@ func TestCollectionWhenNotEmptyOnNotEmpty(t *testing.T) {
 	assert.Equal(t, Array{"Hi", "Hello", "World"}, collection)
 }
 
-func TestCollectionChunk(t *testing.T) {
+func TestArrayChunk(t *testing.T) {
 	collection := Array{"2607", "f0d0", "1002", "0051", "0000", "0000", "0000", "0004"}
 
 	expected := Array{
