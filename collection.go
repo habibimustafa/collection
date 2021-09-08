@@ -8,65 +8,65 @@ import (
 	"reflect"
 )
 
-type Collection []interface{}
+type Array []interface{}
 
-func Collect(list interface{}) Collection {
+func List(list interface{}) Array {
 	val := reflect.ValueOf(list)
 	switch val.Kind() {
 	case reflect.Slice, reflect.Array:
-		c := Collection{}
+		c := Array{}
 		for i := 0; i < val.Len(); i++ {
 			c = append(c, val.Index(i).Interface())
 		}
 		return c
 	case reflect.Map:
-		c := Collection{}
+		c := Array{}
 		for _, k := range val.MapKeys() {
 			c = append(c, val.MapIndex(k).Interface())
 		}
 		return c
 	default:
-		log.Fatalln("list: list type must be a slice, array or map")
+		log.Fatalln("list: list type must be a slice, Array or map")
 	}
 
 	return nil
 }
 
-func (c Collection) All() []interface{} {
-	return c
+func (a Array) All() []interface{} {
+	return a
 }
 
-func (c Collection) Get(index int) interface{} {
-	return c[index]
+func (a Array) Get(index int) interface{} {
+	return a[index]
 }
 
-func (c Collection) Size() int {
-	return len(c)
+func (a Array) Size() int {
+	return len(a)
 }
 
-func (c Collection) First() interface{} {
-	return c[0]
+func (a Array) First() interface{} {
+	return a[0]
 }
 
-func (c Collection) Last() interface{} {
-	return c[c.Size()-1]
+func (a Array) Last() interface{} {
+	return a[a.Size()-1]
 }
 
-func (c Collection) IsNotEmpty() bool {
-	return c.Size() > 0
+func (a Array) IsNotEmpty() bool {
+	return a.Size() > 0
 }
 
-func (c Collection) Append(item interface{}) Collection {
-	return append(c, item)
+func (a Array) Append(item interface{}) Array {
+	return append(a, item)
 }
 
-func (c Collection) Prepend(item interface{}) Collection {
-	return append(Collection{item}, c...)
+func (a Array) Prepend(item interface{}) Array {
+	return append(Array{item}, a...)
 }
 
-func (c Collection) Implode(glue string) string {
+func (a Array) Implode(glue string) string {
 	var buf bytes.Buffer
-	for i, str := range c {
+	for i, str := range a {
 		if i > 0 {
 			buf.WriteString(glue)
 		}
@@ -76,26 +76,26 @@ func (c Collection) Implode(glue string) string {
 	return buf.String()
 }
 
-func (c Collection) Keys() []interface{} {
+func (a Array) Keys() []interface{} {
 	var keys []interface{}
-	for k, _ := range c {
+	for k, _ := range a {
 		keys = append(keys, k)
 	}
 	return keys
 }
 
-func (c Collection) Index(value interface{}) interface{} {
-	for k, v := range c {
-		if v == value {
-			return k
+func (a Array) Index(value interface{}) interface{} {
+	for index, item := range a {
+		if item == value {
+			return index
 		}
 	}
 
 	return nil
 }
 
-func (c Collection) Has(value interface{}) bool {
-	for _, item := range c {
+func (a Array) Has(value interface{}) bool {
+	for _, item := range a {
 		if value == item {
 			return true
 		}
@@ -103,25 +103,25 @@ func (c Collection) Has(value interface{}) bool {
 	return false
 }
 
-func (c Collection) Each(callback func(item interface{}, index int)) Collection {
-	itemsCopy := c
+func (a Array) Each(callback func(item interface{}, index int)) Array {
+	itemsCopy := a
 	for i, item := range itemsCopy {
 		callback(item, i)
 	}
-	return c
+	return a
 }
 
-func (c Collection) Map(callback func(item interface{}) interface{}) Collection {
-	var newCollection Collection
-	for _, item := range c {
+func (a Array) Map(callback func(item interface{}) interface{}) Array {
+	var newCollection Array
+	for _, item := range a {
 		newCollection = append(newCollection, callback(item))
 	}
 	return newCollection
 }
 
-func (c Collection) Filter(callback func(item interface{}) bool) Collection {
-	var newCollection Collection
-	for _, item := range c {
+func (a Array) Filter(callback func(item interface{}) bool) Array {
+	var newCollection Array
+	for _, item := range a {
 		if callback(item) {
 			newCollection = append(newCollection, item)
 		}
@@ -129,32 +129,32 @@ func (c Collection) Filter(callback func(item interface{}) bool) Collection {
 	return newCollection
 }
 
-func (c Collection) WhenNotEmpty(callback func(collection Collection) interface{}) Collection {
-	if c.IsNotEmpty() {
-		result := callback(c)
-		if newCollection, ok := result.(Collection); ok {
+func (a Array) WhenNotEmpty(callback func(collection Array) interface{}) Array {
+	if a.IsNotEmpty() {
+		result := callback(a)
+		if newCollection, ok := result.(Array); ok {
 			return newCollection
 		}
 	}
 
-	return c
+	return a
 }
 
-func (c Collection) Chunk(size int) interface{} {
+func (a Array) Chunk(size int) interface{} {
 	if size <= 0 {
-		return c
+		return a
 	}
 
-	length := len(c)
+	length := len(a)
 	chunks := int(math.Ceil(float64(length) / float64(size)))
 
-	var newCollection Collection
+	var newCollection Array
 	for i, end := 0, 0; chunks > 0; chunks-- {
 		end = (i + 1) * size
 		if end > length {
 			end = length
 		}
-		newCollection = append(newCollection, c[i*size:end])
+		newCollection = append(newCollection, a[i*size:end])
 		i++
 	}
 
