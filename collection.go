@@ -76,13 +76,20 @@ func (c Collection) Implode(glue string) string {
 	return buf.String()
 }
 
+func (c Collection) Keys() []interface{} {
+	var keys []interface{}
+	for k, _ := range c {
+		keys = append(keys, k)
+	}
+	return keys
+}
+
 func (c Collection) Has(value interface{}) bool {
 	for _, item := range c {
 		if value == item {
 			return true
 		}
 	}
-
 	return false
 }
 
