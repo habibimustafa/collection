@@ -83,6 +83,18 @@ func TestCollectionKeys(t *testing.T) {
 	assert.Equal(t, []interface{}{0, 1}, collection.Keys())
 }
 
+func TestCollectionIndex(t *testing.T) {
+	collection := Collection{"Hello", "World"}
+	assert.Equal(t, 0, collection.Index("Hello"))
+	assert.Equal(t, 1, collection.Index("World"))
+	assert.Equal(t, nil, collection.Index("Random"))
+
+	collection = Collect(map[string]string{"first": "John", "last": "Doe"})
+	assert.Equal(t, 0, collection.Index("John"))
+	assert.Equal(t, 1, collection.Index("Doe"))
+	assert.Equal(t, nil, collection.Index("Random"))
+}
+
 func TestCollectionHas(t *testing.T) {
 	collection := Collection{"Hello", "World"}
 	assert.True(t, collection.Has("Hello"))
