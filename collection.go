@@ -84,6 +84,16 @@ func (c Collection) Keys() []interface{} {
 	return keys
 }
 
+func (c Collection) Index(value interface{}) interface{} {
+	for k, v := range c {
+		if v == value {
+			return k
+		}
+	}
+
+	return nil
+}
+
 func (c Collection) Has(value interface{}) bool {
 	for _, item := range c {
 		if value == item {
