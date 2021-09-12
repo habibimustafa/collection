@@ -10,6 +10,10 @@ import (
 type Array []interface{}
 
 func List(list interface{}) Array {
+	if list == nil {
+		return Array{}
+	}
+
 	val := reflect.ValueOf(list)
 	switch val.Kind() {
 	case reflect.Slice, reflect.Array:
@@ -25,7 +29,7 @@ func List(list interface{}) Array {
 		}
 		return c
 	default:
-		panic("list: list type must be a slice, array or map")
+		panic("list: list type must be a slice, array, map, or nil")
 		return nil
 	}
 }
