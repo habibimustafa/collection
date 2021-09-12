@@ -50,6 +50,8 @@ func TestArrayGetFirstAndLastItem(t *testing.T) {
 	array := Array{"Hello", "Middle", "World"}
 	assert.Equal(t, "Hello", array.First())
 	assert.Equal(t, "World", array.Last())
+	assert.PanicsWithValue(t, "cannot get first element from empty array", func() { Array{}.First() })
+	assert.PanicsWithValue(t, "cannot get last element from empty array", func() { Array{}.Last() })
 }
 
 func TestArrayIsNotEmpty(t *testing.T) {

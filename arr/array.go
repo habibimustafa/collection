@@ -45,10 +45,16 @@ func (a Array) Size() int {
 }
 
 func (a Array) First() interface{} {
+	if a.Size() < 1 {
+		panic("cannot get first element from empty array")
+	}
 	return a[0]
 }
 
 func (a Array) Last() interface{} {
+	if a.Size() < 1 {
+		panic("cannot get last element from empty array")
+	}
 	return a[a.Size()-1]
 }
 
