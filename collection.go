@@ -6,12 +6,23 @@ import (
 	"reflect"
 )
 
-type Collection struct {
+type Collection interface {
+	Size() int
+	All() map[interface{}]interface{}
+	Get(index int) map[interface{}]interface{}
+	First() map[interface{}]interface{}
+	Last() map[interface{}]interface{}
+	Slice(slice ...int) map[interface{}]interface{}
+	Keys() arr.Array
+	Values() arr.Array
+}
+
+type collect struct {
 	keys   []interface{}
 	values []interface{}
 }
 
-func Collect(collection interface{}) *Collection {
+func Collect(collection interface{}) Collection {
 	val := reflect.ValueOf(collection)
 	switch val.Kind() {
 	case reflect.Slice, reflect.Array:
@@ -21,7 +32,7 @@ func Collect(collection interface{}) *Collection {
 			keys = append(keys, i)
 			values = append(values, val.Index(i).Interface())
 		}
-		return &Collection{keys, values}
+		return collect{keys, values}
 	case reflect.Map:
 		var keys []interface{}
 		var values []interface{}
@@ -29,19 +40,19 @@ func Collect(collection interface{}) *Collection {
 			keys = append(keys, k.Interface())
 			values = append(values, val.MapIndex(k).Interface())
 		}
-		return &Collection{keys, values}
+		return collect{keys, values}
 	default:
-		log.Fatalln("collection: collection type must be a slice, Array or map")
+		log.Fatalln("collection: collection type must be a slice, array or map")
 	}
 
-	return &Collection{}
+	return collect{}
 }
 
-func (c Collection) Size() int {
+func (c collect) Size() int {
 	return len(c.keys)
 }
 
-func (c Collection) All() map[interface{}]interface{} {
+func (c collect) All() map[interface{}]interface{} {
 	m := map[interface{}]interface{}{}
 	for i, key := range c.keys {
 		m[key] = c.values[i]
@@ -49,21 +60,21 @@ func (c Collection) All() map[interface{}]interface{} {
 	return m
 }
 
-func (c Collection) Get(index int) map[interface{}]interface{} {
+func (c collect) Get(index int) map[interface{}]interface{} {
 	m := map[interface{}]interface{}{}
 	m[c.keys[index]] = c.values[index]
 	return m
 }
 
-func (c Collection) First() map[interface{}]interface{} {
+func (c collect) First() map[interface{}]interface{} {
 	return c.Get(0)
 }
 
-func (c Collection) Last() map[interface{}]interface{} {
+func (c collect) Last() map[interface{}]interface{} {
 	return c.Get(c.Size() - 1)
 }
 
-func (c Collection) Slice(slice ...int) map[interface{}]interface{} {
+func (c collect) Slice(slice ...int) map[interface{}]interface{} {
 	m := map[interface{}]interface{}{}
 	if len(slice) < 1 {
 		return m
@@ -83,10 +94,10 @@ func (c Collection) Slice(slice ...int) map[interface{}]interface{} {
 	return m
 }
 
-func (c Collection) Keys() arr.Array {
+func (c collect) Keys() arr.Array {
 	return arr.List(c.keys)
 }
 
-func (c Collection) Values() arr.Array {
+func (c collect) Values() arr.Array {
 	return arr.List(c.values)
 }
