@@ -50,7 +50,7 @@ func Collect(collection interface{}) Collection {
 		}
 		return collect{keys: keys, values: values}
 	default:
-		panic("collection: collection type must be a slice, array or map")
+		panic("collection: collection type must be a slice, array, map, or nil")
 		return nil
 	}
 }
