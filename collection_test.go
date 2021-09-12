@@ -35,9 +35,16 @@ func TestCreateCollection(t *testing.T) {
 		assert.Equal(t, strCollection.Keys().Get(index), key)
 		return "- " + value.(string), rune(key.(int) + 97)
 	})
-
 	assert.Equal(t, []interface{}{"- Hello", "- World", "- Are", "- You", "- Ready"}, colmap.Values().All())
 	assert.Equal(t, []interface{}{'a', 'b', 'c', 'd', 'e'}, colmap.Keys().All())
+
+	appended := strCollection.Append(20, "Haha")
+	assert.Equal(t, 20, appended.Keys().Last())
+	assert.Equal(t, "Haha", appended.Values().Last())
+	assert.Equal(t, map[interface{}]interface{}{20: "Haha"}, appended.Last())
+	assert.Panics(t, func() { strCollection.Append(2, "Haha") }, "the new key is already exists")
+	assert.Panics(t, func() { strCollection.Append('a', "Haha") }, "the new key type is different")
+	assert.Panics(t, func() { strCollection.Append(20, 2021) }, "the new value type is different")
 
 	arrMap := map[string]string{"First Name": "John", "Last Name": "Doe"}
 	mapCollection := Collect(arrMap)
