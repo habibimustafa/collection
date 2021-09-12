@@ -106,26 +106,6 @@ func (c collect) Contains(key interface{}, value interface{}) bool {
 	return c.All()[key] == value
 }
 
-func (c collect) validateNewItem(key interface{}, value interface{}) {
-	if c.Keys().Has(key) {
-		panic("the new key is already exists")
-	}
-
-	if c.Keys().Size() > 0 {
-		keyType := reflect.TypeOf(c.Keys().First()).Kind()
-		newKeyType := reflect.TypeOf(key).Kind()
-		if keyType != newKeyType {
-			panic("the new key type is different")
-		}
-
-		valType := reflect.TypeOf(c.Values().First()).Kind()
-		newValType := reflect.TypeOf(value).Kind()
-		if valType != newValType {
-			panic("the new value type is different")
-		}
-	}
-}
-
 func (c collect) Append(key interface{}, value interface{}) Collection {
 	c.validateNewItem(key, value)
 	return collect{
@@ -166,4 +146,24 @@ func (c collect) Map(callback func(value interface{}, key interface{}, index int
 		keys = append(keys, newKey)
 	}
 	return collect{keys: keys, values: values}
+}
+
+func (c collect) validateNewItem(key interface{}, value interface{}) {
+	if c.Keys().Has(key) {
+		panic("the new key is already exists")
+	}
+
+	if c.Keys().Size() > 0 {
+		keyType := reflect.TypeOf(c.Keys().First()).Kind()
+		newKeyType := reflect.TypeOf(key).Kind()
+		if keyType != newKeyType {
+			panic("the new key type is different")
+		}
+
+		valType := reflect.TypeOf(c.Values().First()).Kind()
+		newValType := reflect.TypeOf(value).Kind()
+		if valType != newValType {
+			panic("the new value type is different")
+		}
+	}
 }
