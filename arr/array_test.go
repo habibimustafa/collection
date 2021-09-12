@@ -8,166 +8,166 @@ import (
 
 func TestCreateArray(t *testing.T) {
 	arrString := []string{"Hello", "World"}
-	strCollection := List(arrString)
-	assert.Equal(t, len(arrString), len(strCollection))
-	assert.Equal(t, len(arrString), strCollection.Size())
-	assert.Equal(t, "Hello World", strCollection.Implode(" "))
+	strArray := List(arrString)
+	assert.Equal(t, len(arrString), len(strArray))
+	assert.Equal(t, len(arrString), strArray.Size())
+	assert.Equal(t, "Hello World", strArray.Implode(" "))
 
 	arrInt := []int{172, 20, 100, 255}
-	intCollection := List(arrInt)
-	assert.Equal(t, len(arrInt), len(intCollection))
-	assert.Equal(t, len(arrInt), intCollection.Size())
-	assert.Equal(t, "172.20.100.255", intCollection.Implode("."))
+	intArray := List(arrInt)
+	assert.Equal(t, len(arrInt), len(intArray))
+	assert.Equal(t, len(arrInt), intArray.Size())
+	assert.Equal(t, "172.20.100.255", intArray.Implode("."))
 
 	arrRune := []rune{'h', 'e', 'l', 'l', 'o'}
-	runeCollection := List(arrRune)
-	assert.Equal(t, len(arrRune), len(runeCollection))
-	assert.Equal(t, len(arrRune), runeCollection.Size())
-	assert.Equal(t, "104.101.108.108.111", runeCollection.Implode("."))
+	runeArray := List(arrRune)
+	assert.Equal(t, len(arrRune), len(runeArray))
+	assert.Equal(t, len(arrRune), runeArray.Size())
+	assert.Equal(t, "104.101.108.108.111", runeArray.Implode("."))
 
 	arrMap := map[string]string{"First Name": "John", "Last Name": "Doe"}
-	mapCollection := List(arrMap)
-	assert.Equal(t, len(arrMap), len(mapCollection))
-	assert.Equal(t, len(arrMap), mapCollection.Size())
-	assert.Equal(t, "John Doe", mapCollection.Implode(" "))
+	mapArray := List(arrMap)
+	assert.Equal(t, len(arrMap), len(mapArray))
+	assert.Equal(t, len(arrMap), mapArray.Size())
+	assert.Equal(t, "John Doe", mapArray.Implode(" "))
 }
 
 func TestArrayGetAllItems(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	assert.Equal(t, []interface{}{"Hello", "World"}, collection.All())
-	assert.Equal(t, "Hello", collection.All()[0])
-	assert.Equal(t, []interface{}{"Hello"}, collection.All()[:1])
-	assert.Equal(t, []interface{}{"World"}, collection.All()[1:])
+	array := Array{"Hello", "World"}
+	assert.Equal(t, []interface{}{"Hello", "World"}, array.All())
+	assert.Equal(t, "Hello", array.All()[0])
+	assert.Equal(t, []interface{}{"Hello"}, array.All()[:1])
+	assert.Equal(t, []interface{}{"World"}, array.All()[1:])
 }
 
 func TestArrayGetItem(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	assert.Equal(t, "Hello", collection.Get(0))
-	assert.Equal(t, "World", collection.Get(1))
+	array := Array{"Hello", "World"}
+	assert.Equal(t, "Hello", array.Get(0))
+	assert.Equal(t, "World", array.Get(1))
 }
 
 func TestArrayGetFirstAndLastItem(t *testing.T) {
-	collection := Array{"Hello", "Middle", "World"}
-	assert.Equal(t, "Hello", collection.First())
-	assert.Equal(t, "World", collection.Last())
+	array := Array{"Hello", "Middle", "World"}
+	assert.Equal(t, "Hello", array.First())
+	assert.Equal(t, "World", array.Last())
 }
 
 func TestArrayIsNotEmpty(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	assert.True(t, collection.IsNotEmpty())
+	array := Array{"Hello", "World"}
+	assert.True(t, array.IsNotEmpty())
 }
 
 func TestArrayAppend(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	collection = collection.Append("Hi")
+	array := Array{"Hello", "World"}
+	array = array.Append("Hi")
 
-	assert.Equal(t, 3, len(collection))
-	assert.Equal(t, "Hi", collection[2])
+	assert.Equal(t, 3, len(array))
+	assert.Equal(t, "Hi", array[2])
 }
 
 func TestArrayPrepend(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	collection = collection.Prepend("Hi")
+	array := Array{"Hello", "World"}
+	array = array.Prepend("Hi")
 
-	assert.Equal(t, 3, len(collection))
-	assert.Equal(t, "Hi", collection[0])
+	assert.Equal(t, 3, len(array))
+	assert.Equal(t, "Hi", array[0])
 }
 
 func TestArrayImplode(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	assert.Equal(t, "Hello World", collection.Implode(" "))
+	array := Array{"Hello", "World"}
+	assert.Equal(t, "Hello World", array.Implode(" "))
 }
 
 func TestArrayKeys(t *testing.T) {
-	collection := List(map[string]string{"first": "John", "last": "Doe"})
-	assert.Equal(t, []interface{}{0, 1}, collection.Keys())
+	array := List(map[string]string{"first": "John", "last": "Doe"})
+	assert.Equal(t, []interface{}{0, 1}, array.Keys())
 }
 
 func TestArrayIndex(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	assert.Equal(t, 0, collection.Index("Hello"))
-	assert.Equal(t, 1, collection.Index("World"))
-	assert.Equal(t, nil, collection.Index("Random"))
+	array := Array{"Hello", "World"}
+	assert.Equal(t, 0, array.Index("Hello"))
+	assert.Equal(t, 1, array.Index("World"))
+	assert.Equal(t, nil, array.Index("Random"))
 
-	collection = List(map[string]string{"first": "John", "last": "Doe"})
-	assert.Equal(t, 0, collection.Index("John"))
-	assert.Equal(t, 1, collection.Index("Doe"))
-	assert.Equal(t, nil, collection.Index("Random"))
+	array = List(map[string]string{"first": "John", "last": "Doe"})
+	assert.Equal(t, 0, array.Index("John"))
+	assert.Equal(t, 1, array.Index("Doe"))
+	assert.Equal(t, nil, array.Index("Random"))
 }
 
 func TestArrayHas(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	assert.True(t, collection.Has("Hello"))
-	assert.False(t, collection.Has("Random"))
+	array := Array{"Hello", "World"}
+	assert.True(t, array.Has("Hello"))
+	assert.False(t, array.Has("Random"))
 }
 
 func TestArrayEach(t *testing.T) {
-	collectionBefore := Array{"Hello", "World"}
-	collectionAfter := collectionBefore.Each(func(value interface{}, index int) {
+	arrayBefore := Array{"Hello", "World"}
+	arrayAfter := arrayBefore.Each(func(value interface{}, index int) {
 		value = fmt.Sprintf("[%v] %v", index, value)
 	})
 
-	assert.Equal(t, collectionAfter, collectionBefore)
+	assert.Equal(t, arrayAfter, arrayBefore)
 }
 
 func TestArrayMap(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	collection = collection.Map(func(item interface{}) interface{} {
+	array := Array{"Hello", "World"}
+	array = array.Map(func(item interface{}) interface{} {
 		return fmt.Sprintf("- %v\n", item)
 	})
 
-	assert.Equal(t, Array{"- Hello\n", "- World\n"}, collection)
+	assert.Equal(t, Array{"- Hello\n", "- World\n"}, array)
 }
 
 func TestArrayFilter(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	collection = collection.Filter(func(item interface{}) bool {
+	array := Array{"Hello", "World"}
+	array = array.Filter(func(item interface{}) bool {
 		return item != "Hello"
 	})
 
-	assert.Equal(t, Array{"World"}, collection)
+	assert.Equal(t, Array{"World"}, array)
 }
 
 func TestArrayWhenNotEmptyOnEmpty(t *testing.T) {
-	collection := Array{}
-	collection = collection.WhenNotEmpty(func(collection Array) interface{} {
-		return collection.Prepend("Hi")
+	array := Array{}
+	array = array.WhenNotEmpty(func(array Array) interface{} {
+		return array.Prepend("Hi")
 	})
 
-	assert.Equal(t, Array{}, collection)
+	assert.Equal(t, Array{}, array)
 }
 
 func TestArrayWhenNotEmptyOnNotEmpty(t *testing.T) {
-	collection := Array{"Hello", "World"}
-	collection = collection.WhenNotEmpty(func(collection Array) interface{} {
-		return collection.Prepend("Hi")
+	array := Array{"Hello", "World"}
+	array = array.WhenNotEmpty(func(array Array) interface{} {
+		return array.Prepend("Hi")
 	})
 
-	assert.Equal(t, Array{"Hi", "Hello", "World"}, collection)
+	assert.Equal(t, Array{"Hi", "Hello", "World"}, array)
 }
 
 func TestArrayChunk(t *testing.T) {
-	collection := Array{"2607", "f0d0", "1002", "0051", "0000", "0000", "0000", "0004"}
+	array := Array{"2607", "f0d0", "1002", "0051", "0000", "0000", "0000", "0004"}
 
 	expected := Array{
 		Array{"2607", "f0d0", "1002", "0051", "0000", "0000", "0000", "0004"},
 	}
 
-	assert.Equal(t, expected, collection.Chunk(8))
+	assert.Equal(t, expected, array.Chunk(8))
 
 	expected = Array{
 		Array{"2607", "f0d0", "1002", "0051", "0000", "0000"},
 		Array{"0000", "0004"},
 	}
 
-	assert.Equal(t, expected, collection.Chunk(6))
+	assert.Equal(t, expected, array.Chunk(6))
 
 	expected = Array{
 		Array{"2607", "f0d0", "1002", "0051"},
 		Array{"0000", "0000", "0000", "0004"},
 	}
 
-	assert.Equal(t, expected, collection.Chunk(4))
+	assert.Equal(t, expected, array.Chunk(4))
 
 	expected = Array{
 		Array{"2607", "f0d0"},
@@ -176,8 +176,8 @@ func TestArrayChunk(t *testing.T) {
 		Array{"0000", "0004"},
 	}
 
-	assert.Equal(t, expected, collection.Chunk(2))
+	assert.Equal(t, expected, array.Chunk(2))
 
-	assert.Equal(t, collection, collection.Chunk(0))
-	assert.Equal(t, collection, collection.Chunk(-1))
+	assert.Equal(t, array, array.Chunk(0))
+	assert.Equal(t, array, array.Chunk(-1))
 }
