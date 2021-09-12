@@ -47,21 +47,25 @@ func (a Array) Size() int {
 }
 
 func (a Array) First() interface{} {
-	if a.Size() < 1 {
+	if a.IsEmpty() {
 		panic("cannot get first element from empty array")
 	}
 	return a[0]
 }
 
 func (a Array) Last() interface{} {
-	if a.Size() < 1 {
+	if a.IsEmpty() {
 		panic("cannot get last element from empty array")
 	}
 	return a[a.Size()-1]
 }
 
+func (a Array) IsEmpty() bool {
+	return a.Size() < 1
+}
+
 func (a Array) IsNotEmpty() bool {
-	return a.Size() > 0
+	return !a.IsEmpty()
 }
 
 func (a Array) Append(item interface{}) Array {
