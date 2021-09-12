@@ -44,7 +44,7 @@ func TestCreateCollection(t *testing.T) {
 	assert.Equal(t, map[interface{}]interface{}{20: "Haha"}, appended.Last())
 	assert.PanicsWithValue(t, "the new key is already exists", func() { strCollection.Append(2, "Haha") })
 	assert.PanicsWithValue(t, "the new key type is different", func() { strCollection.Append('a', "Haha") })
-	assert.PanicsWithValue(t, "the new value type is different", func() { strCollection.Append(20, 2021) })
+	assert.NotPanics(t, func() { strCollection.Append(20, 2021) })
 
 	prepended := strCollection.Prepend(-5, "Haha")
 	assert.Equal(t, -5, prepended.Keys().First())
@@ -52,7 +52,7 @@ func TestCreateCollection(t *testing.T) {
 	assert.Equal(t, map[interface{}]interface{}{-5: "Haha"}, prepended.First())
 	assert.PanicsWithValue(t, "the new key is already exists", func() { strCollection.Prepend(2, "Haha") })
 	assert.PanicsWithValue(t, "the new key type is different", func() { strCollection.Prepend('a', "Haha") })
-	assert.PanicsWithValue(t, "the new value type is different", func() { strCollection.Prepend(-5, 2021) })
+	assert.NotPanics(t, func() { strCollection.Prepend(-5, 2021) })
 
 	arrMap := map[string]string{"First Name": "John", "Last Name": "Doe"}
 	mapCollection := Collect(arrMap)
