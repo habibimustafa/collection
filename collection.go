@@ -26,6 +26,10 @@ type collect struct {
 }
 
 func Collect(collection interface{}) Collection {
+	if collection == nil {
+		return collect{}
+	}
+
 	val := reflect.ValueOf(collection)
 	switch val.Kind() {
 	case reflect.Slice, reflect.Array:
@@ -46,9 +50,8 @@ func Collect(collection interface{}) Collection {
 		return collect{keys, values}
 	default:
 		log.Fatalln("collection: collection type must be a slice, array or map")
+		return collect{}
 	}
-
-	return collect{}
 }
 
 func (c collect) Size() int {
