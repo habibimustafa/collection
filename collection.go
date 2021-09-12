@@ -15,6 +15,7 @@ type Collection interface {
 	Slice(slice ...int) map[interface{}]interface{}
 	Keys() arr.Array
 	Values() arr.Array
+	Each(callback func(item map[interface{}]interface{}, index int))
 }
 
 type collect struct {
@@ -100,4 +101,10 @@ func (c collect) Keys() arr.Array {
 
 func (c collect) Values() arr.Array {
 	return arr.List(c.values)
+}
+
+func (c collect) Each(callback func(item map[interface{}]interface{}, index int)) {
+	for i := 0; i < c.Size(); i++ {
+		callback(c.Get(i), i)
+	}
 }
