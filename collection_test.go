@@ -20,6 +20,15 @@ func TestCreateCollection(t *testing.T) {
 	assert.Equal(t, map[interface{}]interface{}{2: "Are", 3: "You", 4: "Ready"}, strCollection.Slice(2, 5))
 	assert.Equal(t, map[interface{}]interface{}{2: "Are", 3: "You"}, strCollection.Slice(2, 3))
 
+	idx := 0
+	strCollection.Each(func(item map[interface{}]interface{}, index int) {
+		assert.Equal(t, idx, index)
+		assert.Equal(t, map[interface{}]interface{}{
+			strCollection.Keys().Get(idx): strCollection.Values().Get(idx),
+		}, item)
+		idx++
+	})
+
 	arrMap := map[string]string{"First Name": "John", "Last Name": "Doe"}
 	mapCollection := Collect(arrMap)
 	assert.Equal(t, len(arrMap), mapCollection.Size())
@@ -27,4 +36,13 @@ func TestCreateCollection(t *testing.T) {
 	assert.Equal(t, []interface{}{"First Name", "Last Name"}, mapCollection.Keys().All())
 	assert.Equal(t, []interface{}{"John", "Doe"}, mapCollection.Values().All())
 	assert.Equal(t, "John Doe", mapCollection.Values().Implode(" "))
+
+	idx = 0
+	mapCollection.Each(func(item map[interface{}]interface{}, index int) {
+		assert.Equal(t, idx, index)
+		assert.Equal(t, map[interface{}]interface{}{
+			mapCollection.Keys().Get(idx): mapCollection.Values().Get(idx),
+		}, item)
+		idx++
+	})
 }
