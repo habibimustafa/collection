@@ -16,7 +16,8 @@ type Collection interface {
 	Contains(key interface{}, val interface{}) bool
 	Keys() arr.Array
 	Values() arr.Array
-	Each(callback func(item map[interface{}]interface{}, index int)) Collection
+	Each(callback func(value interface{}, key interface{}, index int)) Collection
+	Map(callback func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{})) Collection
 }
 
 type collect struct {
@@ -108,9 +109,20 @@ func (c collect) Values() arr.Array {
 	return arr.List(c.values)
 }
 
-func (c collect) Each(callback func(item map[interface{}]interface{}, index int)) Collection {
+func (c collect) Each(callback func(value interface{}, key interface{}, index int)) Collection {
 	for i := 0; i < c.Size(); i++ {
-		callback(c.Get(i), i)
+		callback(c.values[i], c.keys[i], i)
 	}
 	return c
+}
+
+func (c collect) Map(callback func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{})) Collection {
+	var keys []interface{}
+	var values []interface{}
+	for i := 0; i < c.Size(); i++ {
+		newValue, newKey := callback(c.values[i], c.keys[i], i)
+		values = append(values, newValue)
+		keys = append(keys, newKey)
+	}
+	return collect{keys: keys, values: values}
 }
