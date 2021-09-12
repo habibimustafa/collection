@@ -14,6 +14,8 @@ type Collection interface {
 	Last() map[interface{}]interface{}
 	Slice(slice ...int) map[interface{}]interface{}
 	Contains(key interface{}, val interface{}) bool
+	Append(key interface{}, val interface{}) Collection
+	Prepend(key interface{}, val interface{}) Collection
 	Keys() arr.Array
 	Values() arr.Array
 	Each(callback func(value interface{}, key interface{}, index int)) Collection
@@ -39,7 +41,7 @@ func Collect(collection interface{}) Collection {
 			keys = append(keys, i)
 			values = append(values, val.Index(i).Interface())
 		}
-		return collect{keys, values}
+		return collect{keys: keys, values: values}
 	case reflect.Map:
 		var keys []interface{}
 		var values []interface{}
@@ -47,7 +49,7 @@ func Collect(collection interface{}) Collection {
 			keys = append(keys, k.Interface())
 			values = append(values, val.MapIndex(k).Interface())
 		}
-		return collect{keys, values}
+		return collect{keys: keys, values: values}
 	default:
 		log.Fatalln("collection: collection type must be a slice, array or map")
 		return collect{}
@@ -102,6 +104,42 @@ func (c collect) Slice(slice ...int) map[interface{}]interface{} {
 
 func (c collect) Contains(key interface{}, value interface{}) bool {
 	return c.All()[key] == value
+}
+
+func (c collect) validateNewItem(key interface{}, value interface{}) {
+	if c.Keys().Has(key) {
+		panic("the new key is already exists")
+	}
+
+	if c.Keys().Size() > 0 {
+		keyType := reflect.TypeOf(c.Keys().First()).Kind()
+		newKeyType := reflect.TypeOf(key).Kind()
+		if keyType != newKeyType {
+			panic("the new key type is different")
+		}
+
+		valType := reflect.TypeOf(c.Values().First()).Kind()
+		newValType := reflect.TypeOf(value).Kind()
+		if valType != newValType {
+			panic("the new value type is different")
+		}
+	}
+}
+
+func (c collect) Append(key interface{}, value interface{}) Collection {
+	c.validateNewItem(key, value)
+	return collect{
+		keys:   c.Keys().Append(key).All(),
+		values: c.Values().Append(value).All(),
+	}
+}
+
+func (c collect) Prepend(key interface{}, value interface{}) Collection {
+	c.validateNewItem(key, value)
+	return collect{
+		keys:   c.Keys().Prepend(key).All(),
+		values: c.Values().Prepend(value).All(),
+	}
 }
 
 func (c collect) Keys() arr.Array {
