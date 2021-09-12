@@ -23,13 +23,20 @@ func TestCreateCollection(t *testing.T) {
 	assert.False(t, strCollection.Contains(2, "Ready"))
 
 	idx := 0
-	strCollection.Each(func(item map[interface{}]interface{}, index int) {
+	strCollection.Each(func(value interface{}, key interface{}, index int) {
 		assert.Equal(t, idx, index)
-		assert.Equal(t, map[interface{}]interface{}{
-			strCollection.Keys().Get(idx): strCollection.Values().Get(idx),
-		}, item)
+		assert.Equal(t, strCollection.Values().Get(idx), value)
+		assert.Equal(t, strCollection.Keys().Get(idx), key)
 		idx++
 	})
+
+	colmap := strCollection.Map(func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{}) {
+		assert.Equal(t, strCollection.Values().Get(index), value)
+		assert.Equal(t, strCollection.Keys().Get(index), key)
+		return "- " + value.(string), key
+	})
+
+	assert.Equal(t, []interface{}{"- Hello", "- World", "- Are", "- You", "- Ready"}, colmap.Values().All())
 
 	arrMap := map[string]string{"First Name": "John", "Last Name": "Doe"}
 	mapCollection := Collect(arrMap)
@@ -42,11 +49,10 @@ func TestCreateCollection(t *testing.T) {
 	assert.False(t, mapCollection.Contains("Last Name", "John"))
 
 	idx = 0
-	mapCollection.Each(func(item map[interface{}]interface{}, index int) {
+	mapCollection.Each(func(value interface{}, key interface{}, index int) {
 		assert.Equal(t, idx, index)
-		assert.Equal(t, map[interface{}]interface{}{
-			mapCollection.Keys().Get(idx): mapCollection.Values().Get(idx),
-		}, item)
+		assert.Equal(t, mapCollection.Values().Get(idx), value)
+		assert.Equal(t, mapCollection.Keys().Get(idx), key)
 		idx++
 	})
 }
