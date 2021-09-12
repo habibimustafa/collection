@@ -13,6 +13,7 @@ type Collection interface {
 	First() map[interface{}]interface{}
 	Last() map[interface{}]interface{}
 	Slice(slice ...int) map[interface{}]interface{}
+	Contains(key interface{}, val interface{}) bool
 	Keys() arr.Array
 	Values() arr.Array
 	Each(callback func(item map[interface{}]interface{}, index int)) Collection
@@ -93,6 +94,10 @@ func (c collect) Slice(slice ...int) map[interface{}]interface{} {
 	}
 
 	return m
+}
+
+func (c collect) Contains(key interface{}, value interface{}) bool {
+	return c.All()[key] == value
 }
 
 func (c collect) Keys() arr.Array {

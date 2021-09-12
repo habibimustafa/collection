@@ -19,6 +19,8 @@ func TestCreateCollection(t *testing.T) {
 	assert.Equal(t, map[interface{}]interface{}{2: "Are", 3: "You", 4: "Ready"}, strCollection.Slice(2))
 	assert.Equal(t, map[interface{}]interface{}{2: "Are", 3: "You", 4: "Ready"}, strCollection.Slice(2, 5))
 	assert.Equal(t, map[interface{}]interface{}{2: "Are", 3: "You"}, strCollection.Slice(2, 3))
+	assert.True(t, strCollection.Contains(4, "Ready"))
+	assert.False(t, strCollection.Contains(2, "Ready"))
 
 	idx := 0
 	strCollection.Each(func(item map[interface{}]interface{}, index int) {
@@ -36,6 +38,8 @@ func TestCreateCollection(t *testing.T) {
 	assert.Equal(t, []interface{}{"First Name", "Last Name"}, mapCollection.Keys().All())
 	assert.Equal(t, []interface{}{"John", "Doe"}, mapCollection.Values().All())
 	assert.Equal(t, "John Doe", mapCollection.Values().Implode(" "))
+	assert.True(t, mapCollection.Contains("First Name", "John"))
+	assert.False(t, mapCollection.Contains("Last Name", "John"))
 
 	idx = 0
 	mapCollection.Each(func(item map[interface{}]interface{}, index int) {
