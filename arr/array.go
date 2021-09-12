@@ -3,7 +3,6 @@ package arr
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"math"
 	"reflect"
 )
@@ -26,10 +25,9 @@ func List(list interface{}) Array {
 		}
 		return c
 	default:
-		log.Fatalln("list: list type must be a slice, Array or map")
+		panic("list: list type must be a slice, array or map")
+		return nil
 	}
-
-	return nil
 }
 
 func (a Array) All() []interface{} {

@@ -2,7 +2,6 @@ package collection
 
 import (
 	"github.com/habibimustafa/collection/arr"
-	"log"
 	"reflect"
 )
 
@@ -51,8 +50,8 @@ func Collect(collection interface{}) Collection {
 		}
 		return collect{keys: keys, values: values}
 	default:
-		log.Fatalln("collection: collection type must be a slice, array or map")
-		return collect{}
+		panic("collection: collection type must be a slice, array or map")
+		return nil
 	}
 }
 
