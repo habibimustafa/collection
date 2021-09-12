@@ -106,7 +106,7 @@ func (c collect) Contains(key interface{}, value interface{}) bool {
 }
 
 func (c collect) Append(key interface{}, value interface{}) Collection {
-	c.validateNewItem(key, value)
+	c.validateKey(key)
 	return collect{
 		keys:   c.Keys().Append(key).All(),
 		values: c.Values().Append(value).All(),
@@ -114,7 +114,7 @@ func (c collect) Append(key interface{}, value interface{}) Collection {
 }
 
 func (c collect) Prepend(key interface{}, value interface{}) Collection {
-	c.validateNewItem(key, value)
+	c.validateKey(key)
 	return collect{
 		keys:   c.Keys().Prepend(key).All(),
 		values: c.Values().Prepend(value).All(),
@@ -147,7 +147,7 @@ func (c collect) Map(callback func(value interface{}, key interface{}, index int
 	return collect{keys: keys, values: values}
 }
 
-func (c collect) validateNewItem(key interface{}, value interface{}) {
+func (c collect) validateKey(key interface{}) {
 	if c.Keys().Has(key) {
 		panic("the new key is already exists")
 	}
