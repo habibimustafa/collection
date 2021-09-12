@@ -158,11 +158,5 @@ func (c collect) validateNewItem(key interface{}, value interface{}) {
 		if keyType != newKeyType {
 			panic("the new key type is different")
 		}
-
-		valType := reflect.TypeOf(c.Values().First()).Kind()
-		newValType := reflect.TypeOf(value).Kind()
-		if valType != newValType {
-			panic("the new value type is different")
-		}
 	}
 }
