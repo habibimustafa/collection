@@ -145,6 +145,20 @@ func TestCollectionContains(t *testing.T) {
 	assert.False(t, mapCollection.Contains("Last Name", "John"))
 }
 
+func TestCollectionHas(t *testing.T) {
+	strCollection := Collect(arrString)
+	assert.True(t, strCollection.Has(2))
+	assert.True(t, strCollection.Has(2, 4))
+	assert.False(t, strCollection.Has(8))
+	assert.False(t, strCollection.Has(2, 8))
+
+	mapCollection := Collect(arrMap)
+	assert.True(t, mapCollection.Has("First Name"))
+	assert.True(t, mapCollection.Has("First Name", "Last Name"))
+	assert.False(t, mapCollection.Has("City"))
+	assert.False(t, mapCollection.Has("First Name", "City"))
+}
+
 func TestCollectionEach(t *testing.T) {
 	idx := 0
 	strCollection := Collect(arrString)
