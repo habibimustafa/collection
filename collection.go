@@ -22,8 +22,8 @@ type Collection interface {
 	Set(key interface{}, val interface{}) Collection
 	Unset(key interface{}) Collection
 	Remove(key interface{}) Collection
-	Except(keys []interface{}) Collection
-	Only(keys []interface{}) Collection
+	Except(keys ...interface{}) Collection
+	Only(keys ...interface{}) Collection
 	Each(callback func(value interface{}, key interface{}, index int)) Collection
 	Map(callback func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{})) Collection
 	Filter(callback func(value interface{}, key interface{}, index int) bool) Collection
@@ -188,13 +188,13 @@ func (c collect) Remove(key interface{}) Collection {
 	return c.Unset(key)
 }
 
-func (c collect) Except(keys []interface{}) Collection {
+func (c collect) Except(keys ...interface{}) Collection {
 	return c.Filter(func(value interface{}, key interface{}, index int) bool {
 		return !arr.List(keys).Has(key)
 	})
 }
 
-func (c collect) Only(keys []interface{}) Collection {
+func (c collect) Only(keys ...interface{}) Collection {
 	return c.Filter(func(value interface{}, key interface{}, index int) bool {
 		return arr.List(keys).Has(key)
 	})

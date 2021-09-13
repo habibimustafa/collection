@@ -206,13 +206,13 @@ func TestCollectionFilter(t *testing.T) {
 }
 
 func TestCollectionExcept(t *testing.T) {
-	except := Collect(arrString).Except([]interface{}{2, 4})
+	except := Collect(arrString).Except(2, 4)
 	assert.Equal(t, 3, except.Size())
 	assert.Equal(t, map[interface{}]interface{}{0: "Hello", 1: "World", 3: "You"}, except.All())
 	assert.Equal(t, []interface{}{0, 1, 3}, except.Keys().All())
 	assert.Equal(t, []interface{}{"Hello", "World", "You"}, except.Values().All())
 
-	except = Collect(arrMap).Except([]interface{}{"Age", "Last Name"})
+	except = Collect(arrMap).Except("Age", "Last Name")
 	assert.Equal(t, 1, except.Size())
 	assert.Equal(t, map[interface{}]interface{}{"First Name": "John"}, except.All())
 	assert.Equal(t, []interface{}{"First Name"}, except.Keys().All())
@@ -220,13 +220,13 @@ func TestCollectionExcept(t *testing.T) {
 }
 
 func TestCollectionOnly(t *testing.T) {
-	only := Collect(arrString).Only([]interface{}{0, 1, 3})
+	only := Collect(arrString).Only(0, 1, 3)
 	assert.Equal(t, 3, only.Size())
 	assert.Equal(t, map[interface{}]interface{}{0: "Hello", 1: "World", 3: "You"}, only.All())
 	assert.Equal(t, []interface{}{0, 1, 3}, only.Keys().All())
 	assert.Equal(t, []interface{}{"Hello", "World", "You"}, only.Values().All())
 
-	only = Collect(arrMap).Only([]interface{}{"First Name"})
+	only = Collect(arrMap).Only("First Name")
 	assert.Equal(t, 1, only.Size())
 	assert.Equal(t, map[interface{}]interface{}{"First Name": "John"}, only.All())
 	assert.Equal(t, []interface{}{"First Name"}, only.Keys().All())
