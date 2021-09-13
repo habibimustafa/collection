@@ -17,6 +17,7 @@ type Collection interface {
 	Contains(key interface{}, val interface{}) bool
 	Append(key interface{}, val interface{}) Collection
 	Prepend(key interface{}, val interface{}) Collection
+	Set(key interface{}, val interface{}) Collection
 	Keys() arr.Array
 	Values() arr.Array
 	Each(callback func(value interface{}, key interface{}, index int)) Collection
@@ -135,6 +136,27 @@ func (c collect) Prepend(key interface{}, value interface{}) Collection {
 	return collect{
 		keys:   c.Keys().Prepend(key).All(),
 		values: c.Values().Prepend(value).All(),
+	}
+}
+
+func (c collect) Set(key interface{}, value interface{}) Collection {
+	if !c.Keys().Has(key) {
+		return c.Append(key, value)
+	}
+
+	index := c.Keys().Index(key)
+	var values []interface{}
+	for i, v := range c.Values().All() {
+		if i == index {
+			values = append(values, value)
+			continue
+		}
+		values = append(values, v)
+	}
+
+	return collect{
+		keys:   c.Keys().All(),
+		values: values,
 	}
 }
 
