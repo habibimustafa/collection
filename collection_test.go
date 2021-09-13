@@ -86,6 +86,15 @@ func TestCollectionPrepend(t *testing.T) {
 	assert.PanicsWithValue(t, "the new key is already exists", func() { strCollection.Prepend(2, "Haha") })
 	assert.PanicsWithValue(t, "the new key type is different", func() { strCollection.Prepend('a', "Haha") })
 	assert.NotPanics(t, func() { strCollection.Prepend(-5, 2021) })
+
+	mapCollection := Collect(arrMap)
+	prepended = mapCollection.Prepend("City", "Westview")
+	assert.Equal(t, "City", prepended.Keys().First())
+	assert.Equal(t, "Westview", prepended.Values().First())
+	assert.Equal(t, map[interface{}]interface{}{"City": "Westview"}, prepended.First())
+	assert.PanicsWithValue(t, "the new key is already exists", func() { mapCollection.Prepend("Age", 18) })
+	assert.PanicsWithValue(t, "the new key type is different", func() { mapCollection.Prepend('a', 18) })
+	assert.NotPanics(t, func() { mapCollection.Prepend("Blood-type", 'O') })
 }
 
 func TestCollectionContains(t *testing.T) {
