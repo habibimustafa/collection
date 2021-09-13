@@ -1,12 +1,13 @@
 package collection
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 var arrString = []string{"Hello", "World", "Are", "You", "Ready"}
-var arrMap = map[string]interface{}{"First Name": "John", "Last Name": "Doe"}
+var arrMap = map[string]interface{}{"First Name": "John", "Last Name": "Doe", "Age": 28} // will be sorted alphabetically
 
 func TestCreateCollection(t *testing.T) {
 	strCollection := Collect(arrString)
@@ -24,10 +25,10 @@ func TestCollectionGetAllItems(t *testing.T) {
 	assert.Equal(t, "Hello World Are You Ready", strCollection.Values().Implode(" "))
 
 	mapCollection := Collect(arrMap)
-	assert.Equal(t, map[interface{}]interface{}{"First Name": "John", "Last Name": "Doe"}, mapCollection.All())
-	assert.Equal(t, []interface{}{"First Name", "Last Name"}, mapCollection.Keys().All())
-	assert.Equal(t, []interface{}{"John", "Doe"}, mapCollection.Values().All())
-	assert.Equal(t, "John Doe", mapCollection.Values().Implode(" "))
+	assert.Equal(t, map[interface{}]interface{}{"Age": 28, "First Name": "John", "Last Name": "Doe"}, mapCollection.All())
+	assert.Equal(t, []interface{}{"Age", "First Name", "Last Name"}, mapCollection.Keys().All())
+	assert.Equal(t, []interface{}{28, "John", "Doe"}, mapCollection.Values().All())
+	assert.Equal(t, "28 John Doe", mapCollection.Values().Implode(" "))
 }
 
 func TestCollectionGetFirstAndLastItems(t *testing.T) {
@@ -37,9 +38,9 @@ func TestCollectionGetFirstAndLastItems(t *testing.T) {
 	assert.Equal(t, map[interface{}]interface{}{3: "You"}, strCollection.Get(3))
 
 	mapCollection := Collect(arrMap)
-	assert.Equal(t, map[interface{}]interface{}{"First Name": "John"}, mapCollection.First())
+	assert.Equal(t, map[interface{}]interface{}{"Age": 28}, mapCollection.First())
 	assert.Equal(t, map[interface{}]interface{}{"Last Name": "Doe"}, mapCollection.Last())
-	assert.Equal(t, map[interface{}]interface{}{"Last Name": "Doe"}, mapCollection.Get(1))
+	assert.Equal(t, map[interface{}]interface{}{"First Name": "John"}, mapCollection.Get(1))
 }
 
 func TestCollectionSlicing(t *testing.T) {
@@ -103,22 +104,22 @@ func TestCollectionEach(t *testing.T) {
 
 func TestCollectionMap(t *testing.T) {
 	strCollection := Collect(arrString)
-	colmap := strCollection.Map(func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{}) {
+	colMap := strCollection.Map(func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{}) {
 		assert.Equal(t, strCollection.Values().Get(index), value)
 		assert.Equal(t, strCollection.Keys().Get(index), key)
 		return "- " + value.(string), rune(key.(int) + 97)
 	})
 
-	assert.Equal(t, []interface{}{"- Hello", "- World", "- Are", "- You", "- Ready"}, colmap.Values().All())
-	assert.Equal(t, []interface{}{'a', 'b', 'c', 'd', 'e'}, colmap.Keys().All())
+	assert.Equal(t, []interface{}{"- Hello", "- World", "- Are", "- You", "- Ready"}, colMap.Values().All())
+	assert.Equal(t, []interface{}{'a', 'b', 'c', 'd', 'e'}, colMap.Keys().All())
 
 	mapCollection := Collect(arrMap)
-	colmap = mapCollection.Map(func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{}) {
+	colMap = mapCollection.Map(func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{}) {
 		assert.Equal(t, mapCollection.Values().Get(index), value)
 		assert.Equal(t, mapCollection.Keys().Get(index), key)
-		return "> " + value.(string), rune(index + 65)
+		return fmt.Sprintf("> %v", value), rune(index + 65)
 	})
 
-	assert.Equal(t, []interface{}{"> John", "> Doe"}, colmap.Values().All())
-	assert.Equal(t, []interface{}{'A', 'B'}, colmap.Keys().All())
+	assert.Equal(t, []interface{}{"> 28", "> John", "> Doe"}, colMap.Values().All())
+	assert.Equal(t, []interface{}{'A', 'B', 'C'}, colMap.Keys().All())
 }
