@@ -36,11 +36,13 @@ func TestCollectionGetFirstAndLastItems(t *testing.T) {
 	assert.Equal(t, map[interface{}]interface{}{0: "Hello"}, strCollection.First())
 	assert.Equal(t, map[interface{}]interface{}{4: "Ready"}, strCollection.Last())
 	assert.Equal(t, map[interface{}]interface{}{3: "You"}, strCollection.Get(3))
+	assert.Equal(t, "You", strCollection.GetValue(3))
 
 	mapCollection := Collect(arrMap)
 	assert.Equal(t, map[interface{}]interface{}{"Age": 28}, mapCollection.First())
 	assert.Equal(t, map[interface{}]interface{}{"Last Name": "Doe"}, mapCollection.Last())
 	assert.Equal(t, map[interface{}]interface{}{"First Name": "John"}, mapCollection.Get(1))
+	assert.Equal(t, "John", mapCollection.GetValue("First Name"))
 }
 
 func TestCollectionSlicing(t *testing.T) {

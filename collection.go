@@ -10,6 +10,7 @@ type Collection interface {
 	Size() int
 	All() map[interface{}]interface{}
 	Get(index int) map[interface{}]interface{}
+	GetValue(key interface{}) interface{}
 	First() map[interface{}]interface{}
 	Last() map[interface{}]interface{}
 	Slice(slice ...int) map[interface{}]interface{}
@@ -78,6 +79,15 @@ func (c collect) Get(index int) map[interface{}]interface{} {
 	m := map[interface{}]interface{}{}
 	m[c.keys[index]] = c.values[index]
 	return m
+}
+
+func (c collect) GetValue(key interface{}) interface{} {
+	index := c.Keys().Index(key)
+	if index != nil {
+		return c.Values().Get(index.(int))
+	}
+
+	return nil
 }
 
 func (c collect) First() map[interface{}]interface{} {
