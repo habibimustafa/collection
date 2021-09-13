@@ -172,3 +172,21 @@ func TestCollectionMap(t *testing.T) {
 	assert.Equal(t, []interface{}{"> 28", "> John", "> Doe"}, colMap.Values().All())
 	assert.Equal(t, []interface{}{'A', 'B', 'C'}, colMap.Keys().All())
 }
+
+func TestCollectionFilter(t *testing.T) {
+	strCollection := Collect(arrString)
+	colMap := strCollection.Filter(func(value interface{}, key interface{}, index int) bool {
+		return value == "Hello" || value == "Ready"
+	})
+
+	assert.Equal(t, []interface{}{"Hello", "Ready"}, colMap.Values().All())
+	assert.Equal(t, []interface{}{0, 4}, colMap.Keys().All())
+
+	mapCollection := Collect(arrMap)
+	colMap = mapCollection.Filter(func(value interface{}, key interface{}, index int) bool {
+		return key != "Age"
+	})
+
+	assert.Equal(t, []interface{}{"John", "Doe"}, colMap.Values().All())
+	assert.Equal(t, []interface{}{"First Name", "Last Name"}, colMap.Keys().All())
+}
