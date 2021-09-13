@@ -7,27 +7,71 @@ import (
 )
 
 type Collection interface {
+	// Size count the collection items
 	Size() int
+
+	// All get all the items
 	All() map[interface{}]interface{}
+
+	// Keys get array of the keys
 	Keys() arr.Array
+
+	// Values get array of the values
 	Values() arr.Array
+
+	// Get gets item by index
 	Get(index int) map[interface{}]interface{}
+
+	// GetValue gets value by key
 	GetValue(key interface{}) interface{}
+
+	// First gets the first item
 	First() map[interface{}]interface{}
+
+	// Last gets the last item
 	Last() map[interface{}]interface{}
+
+	// Slice gets slice of items
 	Slice(slice ...int) map[interface{}]interface{}
+
+	// Contains is collection contains key with value
 	Contains(key interface{}, val interface{}) bool
+
+	// Has is collection has provided keys
 	Has(keys ...interface{}) bool
+
+	// Append add new item to last position
 	Append(key interface{}, val interface{}) Collection
+
+	// Prepend add new item to first position
 	Prepend(key interface{}, val interface{}) Collection
+
+	// Set update the existing item when its exist
+	// when not exist, it will add new item to last position
 	Set(key interface{}, val interface{}) Collection
+
+	// Unset remove item by key
 	Unset(key interface{}) Collection
+
+	// Remove alias of Unset method
 	Remove(key interface{}) Collection
+
+	// Except gets all items except provided keys
 	Except(keys ...interface{}) Collection
+
+	// Only gets all items that match with provided keys
 	Only(keys ...interface{}) Collection
+
+	// Each looping each item
 	Each(callback func(value interface{}, key interface{}, index int)) Collection
+
+	// Map converts each item into new format
 	Map(callback func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{})) Collection
+
+	// Filter remove unmatched items from the collection
 	Filter(callback func(value interface{}, key interface{}, index int) bool) Collection
+
+	// Where alias of Filter method
 	Where(callback func(value interface{}, key interface{}, index int) bool) Collection
 }
 

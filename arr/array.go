@@ -34,18 +34,22 @@ func List(list interface{}) Array {
 	}
 }
 
+// All gets all items
 func (a Array) All() []interface{} {
 	return a
 }
 
+// Get gets item by index
 func (a Array) Get(index int) interface{} {
 	return a[index]
 }
 
+// Size count items
 func (a Array) Size() int {
 	return len(a)
 }
 
+// First get the first item
 func (a Array) First() interface{} {
 	if a.IsEmpty() {
 		panic("cannot get first element from empty array")
@@ -53,6 +57,7 @@ func (a Array) First() interface{} {
 	return a[0]
 }
 
+// Last get the last item
 func (a Array) Last() interface{} {
 	if a.IsEmpty() {
 		panic("cannot get last element from empty array")
@@ -60,22 +65,27 @@ func (a Array) Last() interface{} {
 	return a[a.Size()-1]
 }
 
+// IsEmpty is array has no items
 func (a Array) IsEmpty() bool {
 	return a.Size() < 1
 }
 
+// IsNotEmpty is array has items
 func (a Array) IsNotEmpty() bool {
 	return !a.IsEmpty()
 }
 
+// Append add new item to last position
 func (a Array) Append(item interface{}) Array {
 	return append(a, item)
 }
 
+// Prepend add new item to first position
 func (a Array) Prepend(item interface{}) Array {
 	return append(Array{item}, a...)
 }
 
+// Implode merge items with glue into string
 func (a Array) Implode(glue string) string {
 	var buf bytes.Buffer
 	for i, str := range a {
@@ -88,6 +98,7 @@ func (a Array) Implode(glue string) string {
 	return buf.String()
 }
 
+// Keys gets the array keys
 func (a Array) Keys() []interface{} {
 	var keys []interface{}
 	for k, _ := range a {
@@ -96,6 +107,7 @@ func (a Array) Keys() []interface{} {
 	return keys
 }
 
+// Index get the index of value
 func (a Array) Index(value interface{}) interface{} {
 	for index, item := range a {
 		if item == value {
@@ -106,6 +118,7 @@ func (a Array) Index(value interface{}) interface{} {
 	return nil
 }
 
+// Has is array has provided value
 func (a Array) Has(value interface{}) bool {
 	for _, item := range a {
 		if value == item {
@@ -115,6 +128,7 @@ func (a Array) Has(value interface{}) bool {
 	return false
 }
 
+// Each looping each item
 func (a Array) Each(callback func(item interface{}, index int)) Array {
 	itemsCopy := a
 	for i, item := range itemsCopy {
@@ -123,6 +137,7 @@ func (a Array) Each(callback func(item interface{}, index int)) Array {
 	return a
 }
 
+// Map converts each item into new format
 func (a Array) Map(callback func(item interface{}) interface{}) Array {
 	var newCollection Array
 	for _, item := range a {
@@ -131,6 +146,7 @@ func (a Array) Map(callback func(item interface{}) interface{}) Array {
 	return newCollection
 }
 
+// Filter remove unmatched items from the array
 func (a Array) Filter(callback func(item interface{}) bool) Array {
 	var newCollection Array
 	for _, item := range a {
@@ -141,6 +157,7 @@ func (a Array) Filter(callback func(item interface{}) bool) Array {
 	return newCollection
 }
 
+// WhenNotEmpty executes callback when array is not empty
 func (a Array) WhenNotEmpty(callback func(collection Array) interface{}) Array {
 	if a.IsNotEmpty() {
 		result := callback(a)
@@ -152,6 +169,7 @@ func (a Array) WhenNotEmpty(callback func(collection Array) interface{}) Array {
 	return a
 }
 
+// Chunk splits items into separated array
 func (a Array) Chunk(size int) interface{} {
 	if size <= 0 {
 		return a
