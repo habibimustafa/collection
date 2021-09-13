@@ -99,6 +99,28 @@ func TestCollectionPrepend(t *testing.T) {
 	assert.NotPanics(t, func() { mapCollection.Prepend("Blood-type", 'O') })
 }
 
+func TestCollectionSet(t *testing.T) {
+	strCollection := Collect(arrString)
+	set := strCollection.Set(20, "Haha")
+	assert.Equal(t, 20, set.Keys().Last())
+	assert.Equal(t, "Haha", set.Values().Last())
+	assert.Equal(t, map[interface{}]interface{}{20: "Haha"}, set.Last())
+	assert.Equal(t, "Haha", strCollection.Set(2, "Haha").GetValue(2))
+	assert.NotPanics(t, func() { strCollection.Set(2, "Haha") })
+	assert.NotPanics(t, func() { strCollection.Append(20, 2021) })
+	assert.PanicsWithValue(t, "the new key type is different", func() { strCollection.Set('a', "Haha") })
+
+	mapCollection := Collect(arrMap)
+	set = mapCollection.Set("City", "Westview")
+	assert.Equal(t, "City", set.Keys().Last())
+	assert.Equal(t, "Westview", set.Values().Last())
+	assert.Equal(t, map[interface{}]interface{}{"City": "Westview"}, set.Last())
+	assert.Equal(t, 18, mapCollection.Set("Age", 18).GetValue("Age"))
+	assert.NotPanics(t, func() { mapCollection.Set("Age", 18) })
+	assert.NotPanics(t, func() { mapCollection.Append("Blood-type", 'O') })
+	assert.PanicsWithValue(t, "the new key type is different", func() { mapCollection.Set('a', 18) })
+}
+
 func TestCollectionContains(t *testing.T) {
 	strCollection := Collect(arrString)
 	assert.True(t, strCollection.Contains(4, "Ready"))
