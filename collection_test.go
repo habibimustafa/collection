@@ -45,9 +45,16 @@ func TestCollectionGetFirstAndLastItems(t *testing.T) {
 
 func TestCollectionSlicing(t *testing.T) {
 	strCollection := Collect(arrString)
+	assert.Equal(t, map[interface{}]interface{}{}, strCollection.Slice(10))
 	assert.Equal(t, map[interface{}]interface{}{2: "Are", 3: "You", 4: "Ready"}, strCollection.Slice(2))
 	assert.Equal(t, map[interface{}]interface{}{2: "Are", 3: "You", 4: "Ready"}, strCollection.Slice(2, 5))
 	assert.Equal(t, map[interface{}]interface{}{2: "Are", 3: "You"}, strCollection.Slice(2, 3))
+
+	mapCollection := Collect(arrMap)
+	assert.Equal(t, map[interface{}]interface{}{}, mapCollection.Slice(10))
+	assert.Equal(t, map[interface{}]interface{}{"First Name": "John", "Last Name": "Doe"}, mapCollection.Slice(1))
+	assert.Equal(t, map[interface{}]interface{}{"First Name": "John", "Last Name": "Doe"}, mapCollection.Slice(1, 5))
+	assert.Equal(t, map[interface{}]interface{}{"First Name": "John", "Last Name": "Doe"}, mapCollection.Slice(1, 2))
 }
 
 func TestCollectionAppend(t *testing.T) {
