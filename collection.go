@@ -18,6 +18,7 @@ type Collection interface {
 	Append(key interface{}, val interface{}) Collection
 	Prepend(key interface{}, val interface{}) Collection
 	Set(key interface{}, val interface{}) Collection
+	Unset(key interface{}) Collection
 	Keys() arr.Array
 	Values() arr.Array
 	Each(callback func(value interface{}, key interface{}, index int)) Collection
@@ -159,6 +160,17 @@ func (c collect) Set(key interface{}, value interface{}) Collection {
 		keys:   c.Keys().All(),
 		values: values,
 	}
+}
+
+func (c collect) Unset(key interface{}) Collection {
+	if !c.Keys().Has(key) {
+		panic("the inputted key is not exist in this collection")
+	}
+
+	removedKey := key
+	return c.Filter(func(value interface{}, key interface{}, index int) bool {
+		return key != removedKey
+	})
 }
 
 func (c collect) Keys() arr.Array {
