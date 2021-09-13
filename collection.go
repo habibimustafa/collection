@@ -22,6 +22,7 @@ type Collection interface {
 	Values() arr.Array
 	Each(callback func(value interface{}, key interface{}, index int)) Collection
 	Map(callback func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{})) Collection
+	Filter(callback func(value interface{}, key interface{}, index int) bool) Collection
 }
 
 type collect struct {
@@ -183,6 +184,21 @@ func (c collect) Map(callback func(value interface{}, key interface{}, index int
 		values = append(values, newValue)
 		keys = append(keys, newKey)
 	}
+	return collect{keys: keys, values: values}
+}
+
+func (c collect) Filter(callback func(value interface{}, key interface{}, index int) bool) Collection {
+	var keys []interface{}
+	var values []interface{}
+	for i := 0; i < c.Size(); i++ {
+		if !callback(c.values[i], c.keys[i], i) {
+			continue
+		}
+
+		values = append(values, c.Values().Get(i))
+		keys = append(keys, c.Keys().Get(i))
+	}
+
 	return collect{keys: keys, values: values}
 }
 
