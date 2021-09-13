@@ -2,6 +2,7 @@ package collection
 
 import (
 	"github.com/habibimustafa/collection/arr"
+	"github.com/habibimustafa/collection/sort"
 	"reflect"
 )
 
@@ -42,12 +43,18 @@ func Collect(collection interface{}) Collection {
 		}
 		return collect{keys: keys, values: values}
 	case reflect.Map:
+		sorted := sort.Sort(val)
+
 		var keys []interface{}
-		var values []interface{}
-		for _, k := range val.MapKeys() {
+		for _, k := range sorted.Key {
 			keys = append(keys, k.Interface())
-			values = append(values, val.MapIndex(k).Interface())
 		}
+
+		var values []interface{}
+		for _, v := range sorted.Value {
+			values = append(values, v.Interface())
+		}
+
 		return collect{keys: keys, values: values}
 	default:
 		panic("collection: collection type must be a slice, array, map, or nil")
