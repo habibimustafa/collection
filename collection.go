@@ -28,6 +28,7 @@ type Collection interface {
 	Each(callback func(value interface{}, key interface{}, index int)) Collection
 	Map(callback func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{})) Collection
 	Filter(callback func(value interface{}, key interface{}, index int) bool) Collection
+	Where(callback func(value interface{}, key interface{}, index int) bool) Collection
 }
 
 type collect struct {
@@ -242,6 +243,10 @@ func (c collect) Filter(callback func(value interface{}, key interface{}, index 
 	}
 
 	return collect{keys: keys, values: values}
+}
+
+func (c collect) Where(callback func(value interface{}, key interface{}, index int) bool) Collection {
+	return c.Filter(callback)
 }
 
 func (c collect) validateKey(key interface{}) {
