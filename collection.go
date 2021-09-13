@@ -17,6 +17,7 @@ type Collection interface {
 	Last() map[interface{}]interface{}
 	Slice(slice ...int) map[interface{}]interface{}
 	Contains(key interface{}, val interface{}) bool
+	Has(keys ...interface{}) bool
 	Append(key interface{}, val interface{}) Collection
 	Prepend(key interface{}, val interface{}) Collection
 	Set(key interface{}, val interface{}) Collection
@@ -134,6 +135,16 @@ func (c collect) Slice(slice ...int) map[interface{}]interface{} {
 
 func (c collect) Contains(key interface{}, value interface{}) bool {
 	return c.All()[key] == value
+}
+
+func (c collect) Has(keys ...interface{}) bool {
+	for _, k := range keys {
+		if !c.Keys().Has(k) {
+			return false
+		}
+	}
+
+	return true
 }
 
 func (c collect) Append(key interface{}, value interface{}) Collection {
