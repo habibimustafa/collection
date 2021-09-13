@@ -121,6 +121,20 @@ func TestCollectionSet(t *testing.T) {
 	assert.PanicsWithValue(t, "the new key type is different", func() { mapCollection.Set('a', 18) })
 }
 
+func TestCollectionUnset(t *testing.T) {
+	unset := Collect(arrString).Unset(2)
+	assert.Equal(t, 4, unset.Size())
+	assert.Equal(t, map[interface{}]interface{}{0: "Hello", 1: "World", 3: "You", 4: "Ready"}, unset.All())
+	assert.Equal(t, []interface{}{0, 1, 3, 4}, unset.Keys().All())
+	assert.Equal(t, []interface{}{"Hello", "World", "You", "Ready"}, unset.Values().All())
+
+	unset = Collect(arrMap).Unset("Age")
+	assert.Equal(t, 2, unset.Size())
+	assert.Equal(t, map[interface{}]interface{}{"First Name": "John", "Last Name": "Doe"}, unset.All())
+	assert.Equal(t, []interface{}{"First Name", "Last Name"}, unset.Keys().All())
+	assert.Equal(t, []interface{}{"John", "Doe"}, unset.Values().All())
+}
+
 func TestCollectionContains(t *testing.T) {
 	strCollection := Collect(arrString)
 	assert.True(t, strCollection.Contains(4, "Ready"))
