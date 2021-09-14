@@ -108,14 +108,14 @@ func (a Array) Keys() []interface{} {
 }
 
 // Index get the index of value
-func (a Array) Index(value interface{}) interface{} {
+func (a Array) Index(value interface{}) int {
 	for index, item := range a {
 		if item == value {
 			return index
 		}
 	}
 
-	return nil
+	return -1
 }
 
 // Has is array has provided value
