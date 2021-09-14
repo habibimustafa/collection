@@ -143,8 +143,8 @@ func (c collect) Get(index int) map[interface{}]interface{} {
 
 func (c collect) GetValue(key interface{}) interface{} {
 	index := c.Keys().Index(key)
-	if index != nil {
-		return c.Values().Get(index.(int))
+	if index > -1 {
+		return c.Values().Get(index)
 	}
 
 	return nil
