@@ -89,12 +89,12 @@ func TestArrayIndex(t *testing.T) {
 	array := Array{"Hello", "World"}
 	assert.Equal(t, 0, array.Index("Hello"))
 	assert.Equal(t, 1, array.Index("World"))
-	assert.Equal(t, nil, array.Index("Random"))
+	assert.Equal(t, -1, array.Index("Random"))
 
 	array = List(map[string]string{"first": "John", "last": "Doe"})
 	assert.Equal(t, 0, array.Index("John"))
 	assert.Equal(t, 1, array.Index("Doe"))
-	assert.Equal(t, nil, array.Index("Random"))
+	assert.Equal(t, -1, array.Index("Random"))
 }
 
 func TestArrayHas(t *testing.T) {
