@@ -218,14 +218,8 @@ func (c collect) Set(key interface{}, value interface{}) Collection {
 	}
 
 	index := c.Keys().Index(key)
-	var values []interface{}
-	for i, v := range c.Values().All() {
-		if i == index {
-			values = append(values, value)
-			continue
-		}
-		values = append(values, v)
-	}
+	values := c.Values().All()
+	values[index] = value
 
 	return collect{
 		keys:   c.Keys().All(),
