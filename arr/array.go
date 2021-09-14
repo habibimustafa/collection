@@ -7,8 +7,10 @@ import (
 	"reflect"
 )
 
+// Array represents a list of array, slice, or map
 type Array []interface{}
 
+// List listing an array, slice, or map to an Array object
 func List(list interface{}) Array {
 	if list == nil {
 		return Array{}
