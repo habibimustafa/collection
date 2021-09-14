@@ -1,3 +1,4 @@
+// Package arr implements additional functions to manage array, slice, and map as an Array object.
 package arr
 
 import (

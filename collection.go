@@ -1,3 +1,4 @@
+// Package collection implements additional functions to manage array, slice, and map as a Collection object.
 package collection
 
 import (
