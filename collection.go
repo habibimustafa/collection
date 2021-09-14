@@ -183,6 +183,10 @@ func (c collect) Contains(key interface{}, value interface{}) bool {
 }
 
 func (c collect) Has(keys ...interface{}) bool {
+	if len(keys) < 1 {
+		return false
+	}
+
 	for _, k := range keys {
 		if !c.Keys().Has(k) {
 			return false
