@@ -250,3 +250,18 @@ func TestCollectionOnly(t *testing.T) {
 	assert.Equal(t, []interface{}{"First Name"}, only.Keys().All())
 	assert.Equal(t, []interface{}{"John"}, only.Values().All())
 }
+
+func TestCollectionWhen(t *testing.T) {
+	c := Collect(arrString).When(
+		func(c Collection) bool { return true },
+		func(c Collection) Collection { return c.Append(20, "Haha") },
+	)
+
+	d := Collect(arrString).When(
+		func(c Collection) bool { return false },
+		func(c Collection) Collection { return c.Append(20, "Haha") },
+	)
+
+	assert.True(t, c.Contains(20, "Haha"))
+	assert.False(t, d.Contains(20, "Haha"))
+}
