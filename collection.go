@@ -75,6 +75,9 @@ type Collection interface {
 
 	// Where alias of Filter method
 	Where(callback func(value interface{}, key interface{}, index int) bool) Collection
+
+	// When do callback when meet criteria
+	When(criteria func(collection Collection) bool, callback func(collection Collection) Collection) Collection
 }
 
 // collect define a structure of array, slice, or map
@@ -316,6 +319,14 @@ func (c collect) Filter(callback func(value interface{}, key interface{}, index 
 // Where alias of Filter method
 func (c collect) Where(callback func(value interface{}, key interface{}, index int) bool) Collection {
 	return c.Filter(callback)
+}
+
+func (c collect) When(criteria func(collection Collection) bool, callback func(collection Collection) Collection) Collection {
+	if criteria(c) {
+		return callback(c)
+	}
+
+	return c
 }
 
 func (c collect) validateKey(key interface{}) {
