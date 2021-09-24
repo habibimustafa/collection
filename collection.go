@@ -81,6 +81,9 @@ type Collection interface {
 
 	// WhenEmpty do callback when collection is empty
 	WhenEmpty(callback func(collection Collection) Collection) Collection
+
+	// WhenNotEmpty do callback when collection is not empty
+	WhenNotEmpty(callback func(collection Collection) Collection) Collection
 }
 
 // collect define a structure of array, slice, or map
@@ -344,6 +347,14 @@ func (c collect) When(criteria func(collection Collection) bool, callback func(c
 
 func (c collect) WhenEmpty(callback func(collection Collection) Collection) Collection {
 	if c.Empty() {
+		return callback(c)
+	}
+
+	return c
+}
+
+func (c collect) WhenNotEmpty(callback func(collection Collection) Collection) Collection {
+	if c.NotEmpty() {
 		return callback(c)
 	}
 
