@@ -78,6 +78,9 @@ type Collection interface {
 
 	// When do callback when meet criteria
 	When(criteria func(collection Collection) bool, callback func(collection Collection) Collection) Collection
+
+	// WhenEmpty do callback when collection is empty
+	WhenEmpty(callback func(collection Collection) Collection) Collection
 }
 
 // collect define a structure of array, slice, or map
@@ -125,6 +128,16 @@ func Collect(collection interface{}) Collection {
 // Size count the collection items
 func (c collect) Size() int {
 	return len(c.keys)
+}
+
+// Empty is collection empty
+func (c collect) Empty() bool {
+	return c.Size() == 0
+}
+
+// NotEmpty is collection not empty
+func (c collect) NotEmpty() bool {
+	return c.Empty() == false
 }
 
 // All get all the items
@@ -323,6 +336,14 @@ func (c collect) Where(callback func(value interface{}, key interface{}, index i
 
 func (c collect) When(criteria func(collection Collection) bool, callback func(collection Collection) Collection) Collection {
 	if criteria(c) {
+		return callback(c)
+	}
+
+	return c
+}
+
+func (c collect) WhenEmpty(callback func(collection Collection) Collection) Collection {
+	if c.Empty() {
 		return callback(c)
 	}
 

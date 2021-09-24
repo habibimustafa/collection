@@ -265,3 +265,16 @@ func TestCollectionWhen(t *testing.T) {
 	assert.True(t, c.Contains(20, "Haha"))
 	assert.False(t, d.Contains(20, "Haha"))
 }
+
+func TestCollectionWhenEmpty(t *testing.T) {
+	c := Collect(nil).WhenEmpty(
+		func(c Collection) Collection { return c.Append(20, "Haha") },
+	)
+
+	d := Collect(arrString).WhenEmpty(
+		func(c Collection) Collection { return c.Append(20, "Haha") },
+	)
+
+	assert.True(t, c.Contains(20, "Haha"))
+	assert.False(t, d.Contains(20, "Haha"))
+}
