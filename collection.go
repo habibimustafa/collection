@@ -337,6 +337,7 @@ func (c collect) Where(callback func(value interface{}, key interface{}, index i
 	return c.Filter(callback)
 }
 
+// When do callback when meet criteria
 func (c collect) When(criteria func(collection Collection) bool, callback func(collection Collection) Collection) Collection {
 	if criteria(c) {
 		return callback(c)
@@ -345,6 +346,7 @@ func (c collect) When(criteria func(collection Collection) bool, callback func(c
 	return c
 }
 
+// WhenEmpty do callback when collection is empty
 func (c collect) WhenEmpty(callback func(collection Collection) Collection) Collection {
 	if c.Empty() {
 		return callback(c)
@@ -353,6 +355,7 @@ func (c collect) WhenEmpty(callback func(collection Collection) Collection) Coll
 	return c
 }
 
+// WhenNotEmpty do callback when collection is not empty
 func (c collect) WhenNotEmpty(callback func(collection Collection) Collection) Collection {
 	if c.NotEmpty() {
 		return callback(c)
