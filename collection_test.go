@@ -205,6 +205,16 @@ func TestCollectionMap(t *testing.T) {
 	assert.Equal(t, []interface{}{'A', 'B', 'C'}, colMap.Keys().All())
 }
 
+func TestCollectionTap(t *testing.T) {
+	c := Collect(arrString)
+	d := c.Tap(func(c Collection) {
+		c.Append(20, "Haha")
+	})
+
+	assert.Equal(t, c, d)
+	assert.False(t, d.Contains(20, "Haha"))
+}
+
 func TestCollectionFilter(t *testing.T) {
 	strCollection := Collect(arrString)
 	colMap := strCollection.Filter(func(value interface{}, key interface{}, index int) bool {

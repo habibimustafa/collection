@@ -70,6 +70,9 @@ type Collection interface {
 	// Map converts each item into new format
 	Map(callback func(value interface{}, key interface{}, index int) (newValue interface{}, newKey interface{})) Collection
 
+	// Tap Pass the collection to the given callback and then return it.
+	Tap(callback func(collection Collection)) Collection
+
 	// Filter remove unmatched items from the collection
 	Filter(callback func(value interface{}, key interface{}, index int) bool) Collection
 
@@ -314,6 +317,12 @@ func (c collect) Map(callback func(value interface{}, key interface{}, index int
 		keys = append(keys, newKey)
 	}
 	return collect{keys: keys, values: values}
+}
+
+// Tap Pass the collection to the given callback and then return it.
+func (c collect) Tap(callback func(collection Collection)) Collection {
+	callback(c)
+	return c
 }
 
 // Filter remove unmatched items from the collection
