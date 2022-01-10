@@ -114,11 +114,18 @@ func TestArrayEach(t *testing.T) {
 
 func TestArrayMap(t *testing.T) {
 	array := Array{"Hello", "World"}
-	array = array.Map(func(item interface{}) interface{} {
+	array = array.Map(func(item interface{}, index int) interface{} {
 		return fmt.Sprintf("- %v\n", item)
 	})
 
 	assert.Equal(t, Array{"- Hello\n", "- World\n"}, array)
+
+	array = Array{"Hello", "World"}
+	array = array.Map(func(item interface{}, index int) interface{} {
+		return fmt.Sprintf("%v. %v\n", index+1, item)
+	})
+
+	assert.Equal(t, Array{"1. Hello\n", "2. World\n"}, array)
 }
 
 func TestArrayFilter(t *testing.T) {

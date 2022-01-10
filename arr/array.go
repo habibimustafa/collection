@@ -141,10 +141,10 @@ func (a Array) Each(callback func(item interface{}, index int)) Array {
 }
 
 // Map converts each item into new format
-func (a Array) Map(callback func(item interface{}) interface{}) Array {
+func (a Array) Map(callback func(item interface{}, index int) interface{}) Array {
 	var newCollection Array
-	for _, item := range a {
-		newCollection = append(newCollection, callback(item))
+	for i, item := range a {
+		newCollection = append(newCollection, callback(item, i))
 	}
 	return newCollection
 }
