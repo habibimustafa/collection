@@ -130,11 +130,18 @@ func TestArrayMap(t *testing.T) {
 
 func TestArrayFilter(t *testing.T) {
 	array := Array{"Hello", "World"}
-	array = array.Filter(func(item interface{}) bool {
+	array = array.Filter(func(item interface{}, index int) bool {
 		return item != "Hello"
 	})
 
 	assert.Equal(t, Array{"World"}, array)
+
+	array = Array{"Hello", "World"}
+	array = array.Filter(func(item interface{}, index int) bool {
+		return index < 1
+	})
+
+	assert.Equal(t, Array{"Hello"}, array)
 }
 
 func TestArrayWhenNotEmptyOnEmpty(t *testing.T) {

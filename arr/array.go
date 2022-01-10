@@ -150,10 +150,10 @@ func (a Array) Map(callback func(item interface{}, index int) interface{}) Array
 }
 
 // Filter remove unmatched items from the array
-func (a Array) Filter(callback func(item interface{}) bool) Array {
+func (a Array) Filter(callback func(item interface{}, index int) bool) Array {
 	var newCollection Array
-	for _, item := range a {
-		if callback(item) {
+	for i, item := range a {
+		if callback(item, i) {
 			newCollection = append(newCollection, item)
 		}
 	}
